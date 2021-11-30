@@ -1,0 +1,118 @@
+﻿@model TCC.Models.DTO.SementeVMDTO
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var title = "Adicionar Semente";
+}
+
+<form method="post">
+    <div class="row col-6">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if (Model.Semente.Id != 0)
+        {
+            //edit
+            <input type="hidden" asp-for="Semente.Id" />
+            title = "Editar Semente";
+        }
+        <div class="col-12 border-bottom">
+            <h2 class="text-primary">@title</h2>
+        </div>
+        <div class="col-8 pt-4">
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Semente.Nome"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Semente.Nome" class="form-control" />
+                    <span asp-validation-for="Semente.Nome" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Semente.CustoMilSementes"></label>
+                </div>
+                <div class="col-8">
+                    <input type="number" asp-for="Semente.CustoMilSementes" class="form-control" step="0.0001" />
+                    <span asp-validation-for="Semente.CustoMilSementes" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Semente.PesoMilSementesKg"></label>
+                </div>
+                <div class="col-8">
+                    <input type="number" asp-for="Semente.PesoMilSementesKg" class="form-control" step="0.01" />
+                    <span asp-validation-for="Semente.PesoMilSementesKg" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Semente.PesoSacaKg"></label>
+                </div>
+                <div class="col-8">
+                    <input type="number" asp-for="Semente.PesoSacaKg" class="form-control" step="0.01" />
+                    <span asp-validation-for="Semente.PesoSacaKg" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Semente.CustoSaca"></label>
+                </div>
+                <div class="col-8">
+                    <input type="number" asp-for="Semente.CustoSaca" class="form-control" step="0.0001" />
+                    <span asp-validation-for="Semente.CustoSaca" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Semente.PoderGerminativo"></label>
+                </div>
+                <div class="col-8">
+                    <input type="number" asp-for="Semente.PoderGerminativo" class="form-control" step="0.01" />
+                    <span asp-validation-for="Semente.PoderGerminativo" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    Cultura
+                </div>
+                <div class="col-8">
+                    @Html.DropDownListFor(m => m.Semente.CulturaId, Model.CultureList, "-Selecione uma Cultura",
+                    new { @class = "form-control" })
+                    <span asp-validation-for="Semente.CulturaId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    Fornecedor
+                </div>
+                <div class="col-8">
+                    @Html.DropDownListFor(m => m.Semente.FornecedorId, Model.ProviderList, "-Selecione um Fornecedor",
+                    new { @class = "form-control" })
+                    <span asp-validation-for="Semente.FornecedorId" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        </br>
+        <div class="form-group row">
+            <div class="col-8 offset-2">
+                @if (Model.Semente.Id != 0)
+                {
+                    <partial name="_EditAndBackToListButton" model="Model.Semente.Id" />
+                }
+                else
+                {
+                    <partial name="_CreateAndBackToListButton" />
+                }
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+<partial name="_ValidationScriptsPartial" />
+<script src="~/js/extensions.js"></script>
+<script>
+    console.log(@Html.Raw(Json.Serialize(@Model)));
+</script>
+}

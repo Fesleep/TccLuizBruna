@@ -1,0 +1,107 @@
+﻿@model TCC.Models.DTO.LoteVMDTO
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var title = "Adicionar Lote";
+}
+
+<form method="post">
+    <div class="row col-6">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if (Model.Lote.Id != 0)
+        {
+            //edit
+            title = "Editar Lote";
+        }
+        <div class="col-12 border-bottom">
+            <h2 class="text-primary">@title</h2>
+        </div>
+        <div class="col-8 pt-4">
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Lote.Nome"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Lote.Nome" class="form-control" />
+                    <span asp-validation-for="Lote.Nome" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row" style="display:none">
+                <div class="col-4">
+                    <label asp-for="Lote.Coordinates"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Lote.Coordinates" class="form-control" id=coords />
+                    <span asp-validation-for="Lote.Coordinates" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row" style="display:none">
+                <div class="col-4">
+                    <label asp-for="Lote.MetrosQuadrados"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Lote.MetrosQuadrados" class="form-control" id=metros />
+                    <span asp-validation-for="Lote.MetrosQuadrados" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-12">
+                    <div id="map"></div>
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <div class="col-8 offset-4">
+                    @if (Model.Lote.Id != 0)
+                    {
+                        <partial name="_EditAndBackToListButton" model="Model.Lote.Id" />
+                    }
+                    else
+                    {
+                        <partial name="_CreateAndBackToListButton" />
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7zcR7IMTHQ5mPzgZQBAqd7WUAim3ReyU&callback=initMap&libraries=drawing,geometry&v=weekly"></script>
+<partial name="_ValidationScriptsPartial" />
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<script>
+
+    function initMap() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+    center: {
+    lat: -22.365941465057425,
+    lng:  -47.356166209595216
+    },
+    zoom: 17,
+    mapTypeId: 'terrain'
+    });
+
+    var drawingManager = new google.maps.drawing.DrawingManager({
+        drawingMode: google.maps.drawing.OverlayType.POLYGON,
+        drawingControl: true,
+        drawingControlOptions: {
+        position: google.maps.ControlPosition.TOP_CENTER,
+        drawingModes: [
+            google.maps.drawing.OverlayType.POLYGON
+        ],
+        },
+    });
+    google.maps.event.addListener(drawingManager, 'polygoncomplete', function (polygon) {
+        var coordStr = "";
+        for (var i = 0; i < polygon.getPath().getLength(); i++) {
+            coordStr += polygon.getPath().getAt(i).toUrlValue(6) + ";";
+            console.log(coordStr);
+            document.getElementById('coords').value = coordStr;
+        }
+            document.getElementById('metros').value = google.maps.geometry.spherical.computeArea( polygon.getPath() );
+    });
+    drawingManager.setMap(map);
+    };
+    google.maps.event.addDomListener(window, "load", initMap);
+</script>
+}

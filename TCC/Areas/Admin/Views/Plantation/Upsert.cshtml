@@ -1,0 +1,85 @@
+﻿@model TCC.Models.DTO.PlantacaoVMDTO
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var title = "Adicionar Plantação";
+}
+
+
+<form method="post" enctype="multipart/form-data">
+    <div class="row col-6">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if (Model.Plantacao.Id != 0)
+        {
+            //edit
+            title = "Editar Plantacao";
+            <input type="hidden" asp-for="Plantacao.Id" />
+        }
+        <div class="col-12 border-bottom">
+            <h2 class="text-primary">@title</h2>
+        </div>
+        <div class="col-8 pt-4">
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Plantacao.Nome"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Plantacao.Nome" class="form-control" />
+                    <span asp-validation-for="Plantacao.Nome" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Plantacao.PlantasPorHectare"></label>
+                </div>
+                <div class="col-8">
+                    <input type="number" asp-for="Plantacao.PlantasPorHectare" class="form-control" />
+                    <span asp-validation-for="Plantacao.PlantasPorHectare" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    Semente
+                </div>
+                <div class="col-8">
+                    @Html.DropDownListFor(m => m.Plantacao.SementeId, Model.SeedList, "-Selecione uma Semente",
+                   new { @class = "form-control" })
+                    <span asp-validation-for="Plantacao.SementeId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    Lote
+                </div>
+                <div class="col-8">
+                    @Html.DropDownListFor(m => m.Plantacao.LoteId, Model.BatchList, "-Selecione um Lote",
+                   new { @class = "form-control" })
+                    <span asp-validation-for="Plantacao.LoteId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-8 offset-4">
+                    @if (Model.Plantacao.Id != 0)
+                    {
+                        <partial name="_EditAndBackToListButton" model="Model.Plantacao.Id" />
+                    }
+                    else
+                    {
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary form-control">Adicionar</button>
+                    </div>
+                    <div class="col">
+                        <a asp-action="Index" class="btn btn-success form-control">Voltar para a lista</a>
+                    </div>
+                </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{ 
+<partial name="_ValidationScriptsPartial" />
+}

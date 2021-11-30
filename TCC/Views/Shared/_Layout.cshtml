@@ -1,0 +1,122 @@
+﻿@using TCC.Utility
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TCC</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo-details">
+            <div class="logo_name">TCC</div>
+            <i class='bx bx-menu' id="btn"></i>
+        </div>
+        <hr class=hr-white>
+        <ul class="nav-list">
+            
+            @if (User.IsInRole(SD.Role_Employee) || User.IsInRole(SD.Role_Admin))
+            {
+                <li>
+                    <a asp-area="Employee" asp-controller="Provider" asp-action="Index">
+                        <i class='bx bxs-truck'></i>
+                        <span class="links_name">Fornecedores</span>
+                    </a>
+                    <span class="tooltip">Fornecedores</span>
+                </li>
+                <li>
+                    <a asp-area="Employee" asp-controller="Culture" asp-action="Index">
+                        <i class='bx bx-spa'></i>
+                        <span class="links_name">Culturas</span>
+                    </a>
+                    <span class="tooltip">Culturas</span>
+                </li>
+                <li>
+                    <a asp-area="Employee" asp-controller="Seed" asp-action="Index">
+                        <i class='bx bx-braille'></i>
+                        <span class="links_name">Sementes</span>
+                    </a>
+                    <span class="tooltip">Sementes</span>
+                </li>
+                <li>
+                    <a asp-area="Employee" asp-controller="Batch" asp-action="Index">
+                        <i class='bx bx-area'></i>
+                        <span class="links_name">Lotes</span>
+                    </a>
+                    <span class="tooltip">Lotes</span>
+                </li>
+            }
+            @if (User.IsInRole(SD.Role_Admin))
+            {
+                <li>
+                    <a asp-area="Admin" asp-controller="Plantation" asp-action="Index">
+                        <i class='bx bx-selection'></i>
+                        <span class="links_name">Plantações</span>
+                    </a>
+                    <span class="tooltip">Plantações</span>
+                </li>
+                <li>
+                    <a asp-area="Admin" asp-controller="Overview" asp-action="Index">
+                        <i class='bx bxs-dashboard'></i>
+                        <span class="links_name">Dashboard</span>
+                    </a>
+                    <span class="tooltip">Dashboard</span>
+                </li>
+                <br />
+                <br />
+            }
+            <partial name="_LoginPartial" />
+        </ul>
+    </div>
+    <section class="home-section">
+        <div class="container">
+            <main role="main" class="pb-3">
+                <partial name="_Notifications" />
+                @RenderBody()
+            </main>
+        </div>
+    </section>
+    <footer class="border-top footer text-white bg-primary">
+        <div class="container">
+            &copy; 2021 - TCC
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.11.3/dataRender/datetime.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://kit.fontawesome.com/e19c476714.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+<script>
+    let sidebar = document.querySelector(".sidebar");
+    let closeBtn = document.querySelector("#btn");
+    let searchBtn = document.querySelector(".bx-search");
+
+    closeBtn.addEventListener("click", ()=>{
+      sidebar.classList.toggle("open");
+      menuBtnChange();//calling the function(optional)
+    });
+
+    // following are the code to change sidebar button(optional)
+    function menuBtnChange() {
+     if(sidebar.classList.contains("open")){
+       closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
+     }else {
+       closeBtn.classList.replace("bx-menu-alt-right","bx-menu");//replacing the iocns class
+     }
+    }
+</script>

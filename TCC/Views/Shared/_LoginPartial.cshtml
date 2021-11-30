@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li>
+            <a asp-area="Identity" asp-page="/Account/Manage/Index">
+                <i class='bx bx-user'></i>
+                <span class="links_name">Perfil</span>
+            </a>
+            <span class="tooltip">Perfil</span>
+        </li>
+        <li class="profile">
+            <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Overview", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link text-white">Logout <i class='bx bx-log-out' id="log_out"></i></button>
+            </form>
+
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a asp-area="Identity" asp-page="/Account/Register">
+                <i class='bx bx-user-plus'></i>
+                <span class="links_name">Registre-se</span>
+            </a>
+            <span class="tooltip">Registre-se</span>
+        </li>
+        <li class="nav-item">
+            <a asp-area="Identity" asp-page="/Account/Login">
+                <i class='bx bx-log-in-circle'></i>
+                <span class="links_name">Login</span>
+            </a>
+            <span class="tooltip">Login</span>
+        </li>
+    }
+</ul>

@@ -1,0 +1,95 @@
+﻿@model TCC.Models.ViewModels.OverviewVM
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<div class="row">
+    <div class="col-6">
+        <h2 class="text-primary">Dashboard </h2>
+    </div>
+</div>
+<br />
+
+<div class="row">
+    <div class="col-md-8">
+        <div id="map" class="row">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bgDarkGray">
+            <div class="card-body">
+                <canvas class="my-4 h-25" id="pie"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div id="bottomItems" style="display:none">
+    <div class="row infoCards">
+        <div class="col-md-3">
+            <div id="hectares" class="card alignCenter bgGray">
+                <div class="card-body">
+                    <h6 class="text-dark">Hectares</h6>
+                    <p class="text-dark"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div id="metragemLinear" class="card alignCenter bgGray">
+                <div class="card-body">
+                    <h6 class="text-dark">Metragem Linear</h6>
+                    <p class="text-dark"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div id="custoPlantacao" class="card alignCenter bgGray">
+                <div class="card-body">
+                    <h6 class="text-dark">Custo da Plantação</h6>
+                    <p class="text-dark"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row" id="graphsDiv" style="display:none">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card bgGray">
+                        <div class="card-body">
+                            <canvas class="my-4 h-25" id="bar"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card bgGray">
+                        <div class="card-body">
+                            <canvas class="my-4 h-25" id="line"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>
+<br>
+
+@section Scripts{
+<script>
+    //document.getElementsByTagName('footer')[0].style.display = 'none';
+    document.getElementById('map').style.display = 'block';
+    const data = @Html.Raw(Json.Serialize(@Model.MainCoordinates));
+    const currentBatchs = @Html.Raw(Json.Serialize(@Model.PlantacoesAtivas));
+    const plantations = @Html.Raw(Json.Serialize(@Model.PlantacoesLote));
+    console.log(plantations);
+</script>
+<script src="~/js/overview.js"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7zcR7IMTHQ5mPzgZQBAqd7WUAim3ReyU&callback=initMap&libraries=geometry,&v=weekly"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="~/js/site.js"></script>
+    }
